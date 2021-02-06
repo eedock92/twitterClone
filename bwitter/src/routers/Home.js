@@ -44,7 +44,11 @@ return (
         </form>
         <div>
             {bweets.map((bweet) => (
-                 <Bweet key={bweet.id} bweetObj={bweet} isOwner={bweet.creatorId === userObj.uid}/>
+                 <Bweet 
+                 key={bweet.id} 
+                 bweetObj={bweet} 
+                 isOwner={bweet.creatorId === userObj.uid}
+                 />
              ))}
         </div>
     </div>

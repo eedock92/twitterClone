@@ -6,7 +6,6 @@ const Bweet = ({ bweetObj, isOwner }) => {
     const [newBweet, setNewBweet] = useState(bweetObj.text);
     const onDeleteClick = async () => {
         const ok = window.confirm("Are you sure you want to delete this bweet?");
-        console.log(ok);
         if(ok){
             //delete bweet
             await dbService.doc(`bweets/${bweetObj.id}`).delete();
@@ -52,8 +51,8 @@ const Bweet = ({ bweetObj, isOwner }) => {
                     </>
                 )}
             </> 
-  )}
+        )}
   </div>
-  )
-                } 
+  );
+};
 export default Bweet;
