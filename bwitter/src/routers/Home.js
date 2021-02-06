@@ -1,22 +1,20 @@
 import { dbService } from "fbase";
 import React , { useEffect, useState } from "react";
+import Bweet from "components/Bweet";
 
 const Home = ({userObj}) => {
     const [bweet, setBweet] = useState("");
     const [bweets, setBweets] = useState([]);
-    const getBweets = async()=>{
-        const dbBweets = await dbService.collection("bweets").get();
-        dbBweets.forEach((document) => {
-            const bweetObject = {
-                ...document.data(),
-                id: document.id,
-            };
-            setBweets(prev => [bweetObject, ...prev]);
-        });
-        console.log(dbBweets);
-    };
+ 
     useEffect(() => {
-        getBweets();
+       
+        dbService.collection("bweets").onSnapshot(snapshot => {
+            const bweetArray = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setBweets(bweetArray);
+        });
     }, []);
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -36,15 +34,18 @@ const Home = ({userObj}) => {
 return (
     <div>
         <form onSubmit={onSubmit}>
-            <input value={bweet} onChange={onChange} type="text" placeholder="What's on your mind?" maxLength={120} />
+            <input 
+                value={bweet} onChange={onChange} 
+                type="text" 
+                placeholder="What's on your mind?" 
+                maxLength={120} 
+            />
             <input type="submit" value="Bweet" />
         </form>
         <div>
-            {bweets.map( (bweet) => (
-            <div key={bweet.id}>
-               <h4>{bweet.bweet}</h4>
-               </div>
-               ))}
+            {bweets.map((bweet) => (
+                 <Bweet key={bweet.id} bweetObj={bweet} isOwner={bweet.creatorId === userObj.uid}/>
+             ))}
         </div>
     </div>
 );
