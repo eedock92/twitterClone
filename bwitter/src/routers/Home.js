@@ -18,15 +18,31 @@ const Home = ({userObj}) => {
     }, []);
     const onSubmit = async (event) => {
         event.preventDefault();
-        const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
-        const response = await fileRef.putString(attachment, "data_url");
-        console.log(response);
+        let attachmentUrl = "";
+        if(attachment !== ""){
+            const attachmentRef = storageService
+            .ref()
+            .child(`${userObj.uid}/${uuidv4()}`);
+            const response = await attachmentRef.putString(attachment, "data_url");
+            attachmentUrl = await response.ref.getDownloadURL();
+        }
+            const bweetObj = {
+                text: bweet,
+                createdAt: Date.now(),
+                creatorId: userObj.uid,
+                attachmentUrl
+            };
+        
+       
+        await dbService.collection("bweets").add(bweetObj);
     //     await dbService.collection("bweets").add({
     //         text: bweet,
     //         createdAt: Date.now(),
     //         creatorId: userObj.uid,
+    //         attachmentUrl
     // });
-    setBweet("");
+        setBweet("");
+        setAttachment("");
     };
     const onChange = (event) => {
         const {
@@ -48,7 +64,7 @@ const Home = ({userObj}) => {
         };
         reader.readAsDataURL(theFile);
     };
-    const onClearAttachment = () => setAttachment(null)
+    const onClearAttachment = () => setAttachment(null);
 return (
     <div>
         <form onSubmit={onSubmit}>
