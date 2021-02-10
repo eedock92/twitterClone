@@ -6,10 +6,10 @@ import Naviagation from "components/Navigation";
 import Profile from "routers/Profile";
 
 
-const AppRouter  = ({isLoggedIn, userObj}) => {
+const AppRouter  = ({refreshUser, isLoggedIn, userObj}) => {
 return (
 <Router>
-    {isLoggedIn && <Naviagation />}
+    {isLoggedIn && <Naviagation userObj={userObj}/>}
     <Switch>
         {isLoggedIn ? (
         <>
@@ -17,7 +17,7 @@ return (
             <Home userObj={userObj}/>
         </Route>
         <Route exact path="/profile">
-            <Profile />
+            <Profile userObj={userObj} refreshUser={refreshUser}/>
         </Route>
         <Redirect from="*" to="/" />
         </>
