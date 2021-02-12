@@ -1,5 +1,4 @@
 import React , { useEffect, useState } from "react";
-
 import { dbService, storageService } from "fbase";
 import Bweet from "components/Bweet";
 import BweetFactory from "components/BweetFactory";
@@ -18,9 +17,9 @@ const Home = ({userObj}) => {
     }, []);
   
 return (
-    <div>
+    <div className="container">
         <BweetFactory userObj = {userObj}/>
-        <div>
+        <div style={{ marginTop: 30 }}>
             {bweets.map((bweet) => (
                  <Bweet 
                  key={bweet.id} 
